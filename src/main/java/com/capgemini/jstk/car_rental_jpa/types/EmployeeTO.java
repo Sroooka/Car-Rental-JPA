@@ -5,26 +5,27 @@ public class EmployeeTO {
 	private Long id = 0L;
 	private String name;
 	private String surname;
-	private String position;
+	private Long positionId;
 
-	public EmployeeTO(String name, String surname, String position) {
+	public EmployeeTO(String name, String surname, Long positionId) {
 		super();
 		this.name = name;
 		this.surname = surname;
-		this.position = position;
+		this.positionId = positionId;
 	}
 
-	public EmployeeTO(Long id, String name, String surname, String position) {
+	public EmployeeTO(Long id, String name, String surname, Long positionId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
-		this.position = position;
+		this.positionId = positionId;
 	}
 	
 	@Override
 	public String toString() {
-		return name + " " + surname + "[Position: " + position + "]";
+		//TODO UPDATE WHEN SERVICE IS FINISHED
+		return name + " " + surname + "[PositionID: " + positionId + "]";
 	}
 	
 	@Override
@@ -88,11 +89,11 @@ public class EmployeeTO {
 		this.surname = surname;
 	}
 
-	public String getPosition() {
-		return position;
+	public Long getPositionId() {
+		return positionId;
 	}
 
-	public void setPosition(String position) {
-		this.position = position;
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
 	}
 }

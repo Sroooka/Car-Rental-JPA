@@ -11,6 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
 import com.capgemini.jstk.car_rental_jpa.domain.impl.AbstractTimeStampEntity;
 
 @Entity
@@ -29,6 +32,7 @@ public class EmployeeEntity extends AbstractTimeStampEntity implements Serializa
 	@ManyToOne
 	private PositionEntity position;
 	
+	@Temporal(TemporalType.DATE)
 	private Date birth;
 	
 	@ManyToOne
