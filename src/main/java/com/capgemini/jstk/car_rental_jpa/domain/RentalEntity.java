@@ -28,17 +28,13 @@ public class RentalEntity extends AbstractTimeStampEntity implements Serializabl
 	@ManyToOne
     private CarEntity car;
 	
-	@Column(name = "rent_begin")
 	private Date rentBegin;
 	
-	@Column(name = "rent_end")
 	private Date rentEnd;
 	
-	@Column(name = "start_location")
 	@ManyToOne
     private LocationEntity startLocation;
 	
-	@Column(name = "end_location")
     @ManyToOne
     private LocationEntity endLocation;
 	

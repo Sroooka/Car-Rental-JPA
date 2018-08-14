@@ -31,17 +31,14 @@ public class CustomerEntity extends AbstractTimeStampEntity implements Serializa
 	
 	private String city;
 	
-	@Column(name = "postal_code")
 	private String postalCode;
 	
-	@Column(name = "birth_date")
 	private Date birthDate;
 	
 	private String phone;
 	
 	private String email;
 	
-	@Column(name = "credit_card_number")
 	private String creditCardNumber;
 	
 	@OneToMany(mappedBy = "customers")

@@ -34,7 +34,7 @@ public class EmployeeEntity extends AbstractTimeStampEntity implements Serializa
 	@ManyToOne
 	private LocationEntity location;
 	
-	@ManyToMany (mappedBy = "CAR_CARER")
+	@ManyToMany (mappedBy = "carers")
 	private Collection<CarEntity> cars;
 	
 	public EmployeeEntity() {

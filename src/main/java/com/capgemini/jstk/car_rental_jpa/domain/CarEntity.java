@@ -21,7 +21,6 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
 	
 	private String model;
 	
-	@Column(name = "production_year")
 	private String productionYear;
 	
 	@ManyToOne
@@ -29,16 +28,11 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
 	
 	private String color;
 	
-	@Column(name = "engine_size")
 	private int engineSize;
 	
 	private int power;
 	
 	private int mileage;
-	
-	@Column(name = "current_location")
-	@ManyToOne
-	private LocationEntity currentLocation;
 	
 	@ManyToMany
     @JoinTable(name = "CAR_CARER",
@@ -123,14 +117,6 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
 
 	public void setMileage(int mileage) {
 		this.mileage = mileage;
-	}
-
-	public LocationEntity getCurrentLocation() {
-		return currentLocation;
-	}
-
-	public void setCurrentLocation(LocationEntity currentLocation) {
-		this.currentLocation = currentLocation;
 	}
 
 	public Collection<EmployeeEntity> getCarers() {

@@ -26,7 +26,6 @@ public class LocationEntity extends AbstractTimeStampEntity implements Serializa
 	
 	private String city;
 	
-	@Column(name = "postal_code")
 	private String postalCode;
 	
 	private String phone;
@@ -36,13 +35,10 @@ public class LocationEntity extends AbstractTimeStampEntity implements Serializa
 	@OneToMany(mappedBy = "location")
     Set<EmployeeEntity> employee;
 	
-	@OneToMany(mappedBy = "current_location")
-    Set<CarEntity> cars;
-	
-    @OneToMany(mappedBy = "start_location")
+    @OneToMany(mappedBy = "startLocation")
     Set<RentalEntity> startRentals;
 
-    @OneToMany(mappedBy = "end_location")
+    @OneToMany(mappedBy = "endLocation")
     Set<RentalEntity> endRentals;
 	
 	public LocationEntity() {
@@ -102,14 +98,6 @@ public class LocationEntity extends AbstractTimeStampEntity implements Serializa
 
 	public void setEmployee(Set<EmployeeEntity> employee) {
 		this.employee = employee;
-	}
-
-	public Set<CarEntity> getCars() {
-		return cars;
-	}
-
-	public void setCars(Set<CarEntity> cars) {
-		this.cars = cars;
 	}
 
 	public Set<RentalEntity> getStartRentals() {

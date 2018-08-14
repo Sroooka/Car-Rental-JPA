@@ -97,7 +97,7 @@ public class CarTO {
 			{
 				throw new RuntimeException("Incorrect Engine Size to be created!");
 			}
-			if (power < 0 || power > 1200)
+			if (power <= 0 || power > 1200)
 			{
 				throw new RuntimeException("Incorrect Power to be created!");
 			}
@@ -111,8 +111,8 @@ public class CarTO {
 	
 	@Override
 	public String toString() {
-		return manufacturer + " " + model + " " + ", Year: " + productionYear + ", Color: " 
-				+ color + ", Engine " + engineSize + "cm3 (" + power + "HP).";
+		return manufacturer + " " + model + " [Year: " + productionYear + "] [Color: " 
+				+ color + "] [Engine " + engineSize + "cm3 (" + power + "HP)]";
 	}
 
 	@Override
@@ -150,5 +150,61 @@ public class CarTO {
 		} else if (!model.equals(other.model))
 			return false;
 		return true;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
+	}
+
+	public int getProductionYear() {
+		return productionYear;
+	}
+
+	public void setProductionYear(int productionYear) {
+		this.productionYear = productionYear;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+	public int getEngineSize() {
+		return engineSize;
+	}
+
+	public void setEngineSize(int engineSize) {
+		this.engineSize = engineSize;
+	}
+
+	public int getPower() {
+		return power;
+	}
+
+	public void setPower(int power) {
+		this.power = power;
 	}
 }
