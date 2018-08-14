@@ -3,7 +3,6 @@ package com.capgemini.jstk.car_rental_jpa.domain;
 import java.io.Serializable;
 import java.util.Set;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
