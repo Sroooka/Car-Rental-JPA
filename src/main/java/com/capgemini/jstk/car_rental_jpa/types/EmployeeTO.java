@@ -1,31 +1,36 @@
 package com.capgemini.jstk.car_rental_jpa.types;
 
+import com.capgemini.jstk.car_rental_jpa.enums.Position;
+
 public class EmployeeTO {
 
 	private Long id = 0L;
 	private String name;
 	private String surname;
-	private Long positionId;
+	private Position position;
 
-	public EmployeeTO(String name, String surname, Long positionId) {
+	public EmployeeTO() {
+		super();
+	}
+	
+	public EmployeeTO(String name, String surname, Position position) {
 		super();
 		this.name = name;
 		this.surname = surname;
-		this.positionId = positionId;
+		this.position = position;
 	}
 
-	public EmployeeTO(Long id, String name, String surname, Long positionId) {
+	public EmployeeTO(Long id, String name, String surname, Position position) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
-		this.positionId = positionId;
+		this.position = position;
 	}
 	
 	@Override
 	public String toString() {
-		//TODO UPDATE WHEN SERVICE IS FINISHED
-		return name + " " + surname + "[PositionID: " + positionId + "]";
+		return name + " " + surname + "[" + position + "]";
 	}
 	
 	@Override
@@ -89,11 +94,11 @@ public class EmployeeTO {
 		this.surname = surname;
 	}
 
-	public Long getPositionId() {
-		return positionId;
+	public Position getPosition() {
+		return position;
 	}
 
-	public void setPositionId(Long positionId) {
-		this.positionId = positionId;
+	public void setPosition(Position position) {
+		this.position = position;
 	}
 }

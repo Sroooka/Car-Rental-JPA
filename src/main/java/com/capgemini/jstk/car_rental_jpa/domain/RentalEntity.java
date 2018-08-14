@@ -9,6 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import com.capgemini.jstk.car_rental_jpa.domain.impl.AbstractTimeStampEntity;
 
@@ -22,13 +24,15 @@ public class RentalEntity extends AbstractTimeStampEntity implements Serializabl
 	private Long id;
 	
 	@ManyToOne
-	private CustomerEntity customers;
+	private CustomerEntity customer;
 	
 	@ManyToOne
     private CarEntity car;
 	
+	@Temporal(TemporalType.DATE)
 	private Date rentBegin;
 	
+	@Temporal(TemporalType.DATE)
 	private Date rentEnd;
 	
 	@ManyToOne
@@ -50,12 +54,12 @@ public class RentalEntity extends AbstractTimeStampEntity implements Serializabl
 		this.id = id;
 	}
 
-	public CustomerEntity getCustomers() {
-		return customers;
+	public CustomerEntity getCustomer() {
+		return customer;
 	}
 
-	public void setCustomers(CustomerEntity customers) {
-		this.customers = customers;
+	public void setCustomer(CustomerEntity customer) {
+		this.customer = customer;
 	}
 
 	public CarEntity getCar() {

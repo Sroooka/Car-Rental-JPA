@@ -9,6 +9,10 @@ public class LocationTO {
 	private String phone;
 	private String email;
 	
+	public LocationTO(){
+		super();
+	}
+	
 	public LocationTO(Long id, String address, String city, String postalCode, String phone, String email) {
 		super();
 		this.id = id;

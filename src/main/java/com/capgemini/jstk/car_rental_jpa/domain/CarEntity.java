@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.*;
 
 import com.capgemini.jstk.car_rental_jpa.domain.impl.AbstractTimeStampEntity;
+import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 
 @Entity
 @Table(name = "CAR")
@@ -21,10 +22,10 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
 	
 	private String model;
 	
-	private String productionYear;
+	private int productionYear;
 	
-	@ManyToOne
-	private CarTypeEntity type;
+	@Enumerated(EnumType.STRING) 
+	private CarType carType;
 	
 	private String color;
 	
@@ -71,20 +72,20 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
 		this.model = model;
 	}
 
-	public String getProductionYear() {
+	public int getProductionYear() {
 		return productionYear;
 	}
 
-	public void setProductionYear(String productionYear) {
+	public void setProductionYear(int productionYear) {
 		this.productionYear = productionYear;
 	}
 
-	public CarTypeEntity getType() {
-		return type;
+	public CarType getCarType() {
+		return carType;
 	}
 
-	public void setType(CarTypeEntity type) {
-		this.type = type;
+	public void setCarType(CarType carType) {
+		this.carType = carType;
 	}
 
 	public String getColor() {

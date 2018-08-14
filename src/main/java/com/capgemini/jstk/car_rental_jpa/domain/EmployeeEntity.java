@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,6 +17,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.capgemini.jstk.car_rental_jpa.domain.impl.AbstractTimeStampEntity;
+import com.capgemini.jstk.car_rental_jpa.enums.Position;
 
 @Entity
 @Table(name = "EMPLOYEE")
@@ -29,8 +32,8 @@ public class EmployeeEntity extends AbstractTimeStampEntity implements Serializa
 	
 	private String surname;
 	
-	@ManyToOne
-	private PositionEntity position;
+	@Enumerated(EnumType.STRING) 
+	private Position position;
 	
 	@Temporal(TemporalType.DATE)
 	private Date birth;
@@ -68,11 +71,11 @@ public class EmployeeEntity extends AbstractTimeStampEntity implements Serializa
 		this.surname = surname;
 	}
 
-	public PositionEntity getPosition() {
+	public Position getPosition() {
 		return position;
 	}
 
-	public void setPosition(PositionEntity position) {
+	public void setPosition(Position position) {
 		this.position = position;
 	}
 

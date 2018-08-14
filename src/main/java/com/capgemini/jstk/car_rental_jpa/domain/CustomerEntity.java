@@ -43,7 +43,7 @@ public class CustomerEntity extends AbstractTimeStampEntity implements Serializa
 	
 	private String creditCardNumber;
 	
-	@OneToMany(mappedBy = "customers")
+	@OneToMany(mappedBy = "customer")
     Set<RentalEntity> rentals;
 	
 	public CustomerEntity() {
