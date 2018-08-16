@@ -1,9 +1,8 @@
 package com.capgemini.jstk.car_rental_jpa.service;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.util.List;
 
 import org.junit.Before;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO.CarTOBuilder;
@@ -84,7 +82,7 @@ public class CarServiceTest {
 	public void shouldFindCarsByProductionYear(){
 		// given
 		carService.saveCar(getPorscheCar());
-		CarTO savedCar = carService.saveCar(getMercedesCar());
+		carService.saveCar(getMercedesCar());
 		
 		// when
 		List<CarTO> selectedCars = carService.findCarByProductionYear(2012);
@@ -118,14 +116,34 @@ public class CarServiceTest {
 		//when
 		CarTO foundCar = carService.findCarById(1L);
 		CarTO deletedCar = carService.deleteCar(1L);
-		CarTO foundCarAfterDeleting = carService.findCarById(1L);
+		boolean containsCar = carService.contains(1L);
 		
 		// then
 		assertNotNull(foundCar);
 		assertEquals(foundCar.getManufacturer(), "Mercedes");
 		assertEquals(foundCar.getModel(), "W204");
 		assertEquals(foundCar, deletedCar);
-		assertNull(foundCarAfterDeleting);
+		assertFalse(containsCar);
+	}
+	
+	@Transactional
+	@Test
+	public void shouldUpdateCar(){
+		//given
+		CarTO beforeUpdateCar = carService.saveCar(getMercedesCar());
+		Long idSavedCar = beforeUpdateCar.getId();
+		// when
+		CarTO newCar = getAudiCar();
+		newCar.setId(idSavedCar);
+		carService.updateCar(newCar);
+		CarTO afterUpdateCar = carService.findCarById(idSavedCar);
+		
+		// then
+		assertNotNull(afterUpdateCar);
+		assertEquals(beforeUpdateCar.getManufacturer(), "Mercedes");
+		assertEquals(beforeUpdateCar.getModel(), "W204");
+		assertEquals(afterUpdateCar.getManufacturer(), "Audi");
+		assertEquals(afterUpdateCar.getModel(), "A8");
 	}
 	
 	private CarTO getMercedesCar(){
@@ -149,6 +167,18 @@ public class CarServiceTest {
 				.withEngineSize(4998)
 				.withPower(354)
 				.withCarType(CarType.SUV)
+				.build();
+	}
+	
+	private CarTO getAudiCar(){
+		return new CarTOBuilder()
+				.withManufacturer("Audi")
+				.withModel("A8")
+				.withColor("silver")
+				.withProductionYear(2017)
+				.withEngineSize(3000)
+				.withPower(310)
+				.withCarType(CarType.SEDAN)
 				.build();
 	}
 }

@@ -1,7 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.service.impl;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -28,11 +27,22 @@ public class CarServiceImpl implements CarService{
 	
 	@Override
 	public CarTO findCarById(Long id) {
+		return CarMapper.toCarTO(carRepository.getOne(id));
+	}
+	
+	@Override
+	public boolean contains(Long id){
 		try {
-			return CarMapper.toCarTO(carRepository.getOne(id));
+			carRepository.getOne(id);
 		} catch (JpaObjectRetrievalFailureException e) {
-			return null;
+			return false;
 		}
+		return true;
+	}
+	
+	@Override
+	public CarEntity findCarEntityById(Long id) {
+		return carRepository.getOne(id);
 	}
 	
 	@Override
@@ -85,5 +95,21 @@ public class CarServiceImpl implements CarService{
 		CarTO car = CarMapper.toCarTO(carRepository.getOne(id));
 		carRepository.delete(id);
 		return car;
+	}
+
+	@Override
+	public CarTO updateCar(CarTO newCar) {
+		CarEntity updatedCar = findCarEntityById(newCar.getId());
+		if (updatedCar == null) {
+			return null;
+		}
+		updatedCar.setManufacturer(newCar.getManufacturer());
+		updatedCar.setModel(newCar.getModel());
+		updatedCar.setProductionYear(newCar.getProductionYear());
+		updatedCar.setColor(newCar.getColor());
+		updatedCar.setEngineSize(newCar.getEngineSize());
+		updatedCar.setPower(newCar.getPower());
+		updatedCar.setCarType(newCar.getCarType());
+		return CarMapper.toCarTO(carRepository.update(updatedCar));
 	}
 }

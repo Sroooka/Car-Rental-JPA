@@ -8,6 +8,7 @@ import com.capgemini.jstk.car_rental_jpa.types.CarTO;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO.CarTOBuilder;
 
 public class CarMapper {
+	
 	public static CarTO toCarTO(CarEntity carEntity) {
 		if (carEntity == null)
 			return null;

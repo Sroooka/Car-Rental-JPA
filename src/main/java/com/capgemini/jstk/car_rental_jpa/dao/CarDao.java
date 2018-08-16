@@ -10,8 +10,4 @@ public interface CarDao extends Dao<CarEntity, Long>{
 	List<CarEntity> findCarsByModel(String model);
 	List<CarEntity> findCarsByProductionYear(int productionYear);
 	List<CarEntity> findCarsByCarType(CarType carType);
-	List<CarEntity> findCarsByColor(String color);
-	List<CarEntity> findCarsByEngineSize(int engineSize);
-	List<CarEntity> findCarsByPower(int power);
-	List<CarEntity> findCarsByMileage(int mileage);
 }

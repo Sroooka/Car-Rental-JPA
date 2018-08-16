@@ -44,28 +44,4 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
         query.setParameter("carType", carType);
         return query.getResultList();
 	}
-
-	@Override
-	public List<CarEntity> findCarsByColor(String color) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CarEntity> findCarsByEngineSize(int engineSize) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CarEntity> findCarsByPower(int power) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<CarEntity> findCarsByMileage(int mileage) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }
