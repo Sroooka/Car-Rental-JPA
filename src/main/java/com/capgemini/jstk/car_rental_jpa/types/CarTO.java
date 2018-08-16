@@ -2,6 +2,8 @@ package com.capgemini.jstk.car_rental_jpa.types;
 
 import java.time.Year;
 
+import com.capgemini.jstk.car_rental_jpa.enums.CarType;
+
 public class CarTO {
 
 	private Long id;
@@ -11,9 +13,10 @@ public class CarTO {
 	private String color;
 	private int engineSize;
 	private int power;
+	private CarType carType;
 
 	public CarTO(Long id, String manufacturer, String model, int productionYear, String color, int engineSize,
-			int power) {
+			int power, CarType carType) {
 		super();
 		this.id = id;
 		this.manufacturer = manufacturer;
@@ -22,6 +25,7 @@ public class CarTO {
 		this.color = color;
 		this.engineSize = engineSize;
 		this.power = power;
+		this.carType = carType;
 	}
 
 	public static class CarTOBuilder {
@@ -33,6 +37,7 @@ public class CarTO {
 		private String color;
 		private int engineSize;
 		private int power;
+		private CarType carType = CarType.SEDAN;
 
 		public CarTOBuilder() {
 			super();
@@ -72,10 +77,15 @@ public class CarTO {
 			this.power = power;
 			return this;
 		}
+		
+		public CarTOBuilder withCarType(CarType carType) {
+			this.carType = carType;
+			return this;
+		}
 
 		public CarTO build() {
 			checkBeforeBuild(manufacturer, model, productionYear, color, engineSize, power);
-			return new CarTO(id, manufacturer, model, productionYear, color, engineSize, power);
+			return new CarTO(id, manufacturer, model, productionYear, color, engineSize, power, carType);
 		}
 
 		private void checkBeforeBuild(String manufacturer, String model, int productionYear, String color,
@@ -111,7 +121,7 @@ public class CarTO {
 	
 	@Override
 	public String toString() {
-		return manufacturer + " " + model + " [Year: " + productionYear + "] [Color: " 
+		return manufacturer + " " + model + " " + carType.toString() + " [Year: " + productionYear + "] [Color: " 
 				+ color + "] [Engine " + engineSize + "cm3 (" + power + "HP)]";
 	}
 
@@ -206,5 +216,13 @@ public class CarTO {
 
 	public void setPower(int power) {
 		this.power = power;
+	}
+
+	public CarType getCarType() {
+		return carType;
+	}
+
+	public void setCarType(CarType carType) {
+		this.carType = carType;
 	}
 }

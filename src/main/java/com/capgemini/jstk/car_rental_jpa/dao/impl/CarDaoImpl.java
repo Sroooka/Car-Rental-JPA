@@ -14,12 +14,6 @@ import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
 
 	@Override
-	public List<CarEntity> findCarsById(Long id) {
-        
-		return null;
-	}
-
-	@Override
 	public List<CarEntity> findCarsByManufacturer(String manufacturer) {
 		TypedQuery<CarEntity> query = entityManager.createQuery(
                 "select car from CarEntity car where upper(car.manufacturer) like concat(upper(:manufacturer), '%')", CarEntity.class);
@@ -29,20 +23,26 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
 
 	@Override
 	public List<CarEntity> findCarsByModel(String model) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<CarEntity> query = entityManager.createQuery(
+                "select car from CarEntity car where upper(car.model) like concat(upper(:model), '%')", CarEntity.class);
+        query.setParameter("model", model);
+        return query.getResultList();
 	}
 
 	@Override
 	public List<CarEntity> findCarsByProductionYear(int productionYear) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<CarEntity> query = entityManager.createQuery(
+                "select car from CarEntity car where car.productionYear = :productionYear", CarEntity.class);
+        query.setParameter("productionYear", productionYear);
+        return query.getResultList();
 	}
 
 	@Override
 	public List<CarEntity> findCarsByCarType(CarType carType) {
-		// TODO Auto-generated method stub
-		return null;
+		TypedQuery<CarEntity> query = entityManager.createQuery(
+                "select car from CarEntity car where car.carType = :carType", CarEntity.class);
+        query.setParameter("carType", carType);
+        return query.getResultList();
 	}
 
 	@Override
@@ -68,5 +68,4 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
 }

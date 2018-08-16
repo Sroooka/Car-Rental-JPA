@@ -27,7 +27,6 @@ public class LocationMapper {
 		if (locationTO == null)
 			return null;
 		LocationEntity locationEntity = new LocationEntity();
-		locationEntity.setId(locationTO.getId());
 		locationEntity.setAddress(locationTO.getAddress());
 		locationEntity.setCity(locationTO.getCity());
 		locationEntity.setPostalCode(locationTO.getPostalCode());

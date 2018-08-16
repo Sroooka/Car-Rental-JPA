@@ -6,7 +6,6 @@ import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 
 public interface CarDao extends Dao<CarEntity, Long>{
-	List<CarEntity> findCarsById(Long id);
 	List<CarEntity> findCarsByManufacturer(String manufacturer);
 	List<CarEntity> findCarsByModel(String model);
 	List<CarEntity> findCarsByProductionYear(int productionYear);

@@ -23,7 +23,6 @@ public class EmployeeMapper {
 		if (employeeTO == null)
 			return null;
 		EmployeeEntity employeeEntity = new EmployeeEntity();
-		employeeEntity.setId(employeeTO.getId());
 		employeeEntity.setName(employeeTO.getName());
 		employeeEntity.setSurname(employeeTO.getSurname());
 		employeeEntity.setPosition(employeeTO.getPosition());

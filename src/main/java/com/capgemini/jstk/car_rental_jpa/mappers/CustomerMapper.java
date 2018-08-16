@@ -13,6 +13,7 @@ public class CustomerMapper {
 		if (customerEntity == null)
 			return null;
 		return new CustomerTOBuilder()
+				.withId(customerEntity.getId())
 				.withName(customerEntity.getName())
 				.withSurname(customerEntity.getSurname())
 				.withAddress(customerEntity.getAddress())

@@ -1,7 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.mappers;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
@@ -13,12 +12,14 @@ public class CarMapper {
 		if (carEntity == null)
 			return null;
 		return new CarTOBuilder()
+				.withId(carEntity.getId())
 				.withManufacturer(carEntity.getManufacturer())
 				.withModel(carEntity.getModel())
 				.withProductionYear(carEntity.getProductionYear())
 				.withColor(carEntity.getColor())
 				.withEngineSize(carEntity.getEngineSize())
 				.withPower(carEntity.getPower())
+				.withCarType(carEntity.getCarType())
 				.build();
 	}
 	
@@ -26,13 +27,13 @@ public class CarMapper {
 		if (carTO == null)
 			return null;
 		CarEntity carEntity = new CarEntity();
-		carEntity.setId(carTO.getId());
 		carEntity.setManufacturer(carTO.getManufacturer());
 		carEntity.setModel(carTO.getModel());
 		carEntity.setProductionYear(carTO.getProductionYear());
 		carEntity.setColor(carTO.getColor());
 		carEntity.setEngineSize(carTO.getEngineSize());
 		carEntity.setPower(carTO.getPower());
+		carEntity.setCarType(carTO.getCarType());
 		return carEntity;
 	}
 	

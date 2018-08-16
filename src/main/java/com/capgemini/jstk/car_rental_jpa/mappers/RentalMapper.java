@@ -26,9 +26,9 @@ public class RentalMapper {
 		if (rentalTO == null)
 			return null;
 		RentalEntity rentalEntity = new RentalEntity();
-		rentalEntity.setId(rentalTO.getId());
 		rentalEntity.setRentBegin(rentalTO.getRentBegin());
 		rentalEntity.setRentEnd(rentalTO.getRentEnd());
+		rentalEntity.setCost(rentalTO.getCost());
 		return rentalEntity;
 	}
 	
