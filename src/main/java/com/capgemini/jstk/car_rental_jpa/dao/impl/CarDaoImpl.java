@@ -1,5 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.dao.impl;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.capgemini.jstk.car_rental_jpa.dao.CarDao;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
+import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 
 @Repository
@@ -43,5 +45,12 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
                 "select car from CarEntity car where car.carType = :carType", CarEntity.class);
         query.setParameter("carType", carType);
         return query.getResultList();
+	}
+
+	@Override
+	public void addCarer(Long carId, EmployeeEntity carer) {
+		CarEntity car = this.findOne(carId);
+		Collection<EmployeeEntity> employees = car.getCarers();
+		employees.add(carer);
 	}
 }

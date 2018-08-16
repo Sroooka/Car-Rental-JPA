@@ -14,7 +14,11 @@ public class CarTO {
 	private int engineSize;
 	private int power;
 	private CarType carType;
-
+	
+	public CarTO(){
+		
+	}
+	
 	public CarTO(Long id, String manufacturer, String model, int productionYear, String color, int engineSize,
 			int power, CarType carType) {
 		super();

@@ -1,7 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.mappers;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.capgemini.jstk.car_rental_jpa.domain.CustomerEntity;

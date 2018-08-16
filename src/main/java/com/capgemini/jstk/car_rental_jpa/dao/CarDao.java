@@ -3,6 +3,7 @@ package com.capgemini.jstk.car_rental_jpa.dao;
 import java.util.List;
 
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
+import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 
 public interface CarDao extends Dao<CarEntity, Long>{
@@ -10,4 +11,5 @@ public interface CarDao extends Dao<CarEntity, Long>{
 	List<CarEntity> findCarsByModel(String model);
 	List<CarEntity> findCarsByProductionYear(int productionYear);
 	List<CarEntity> findCarsByCarType(CarType carType);
+	void addCarer(Long carId, EmployeeEntity carer);
 }

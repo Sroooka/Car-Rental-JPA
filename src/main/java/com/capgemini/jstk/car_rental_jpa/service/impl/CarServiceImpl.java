@@ -1,23 +1,34 @@
 package com.capgemini.jstk.car_rental_jpa.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.jstk.car_rental_jpa.dao.CarDao;
+import com.capgemini.jstk.car_rental_jpa.dao.EmployeeDao;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
+import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.mappers.CarMapper;
 import com.capgemini.jstk.car_rental_jpa.service.CarService;
+import com.capgemini.jstk.car_rental_jpa.service.EmployeeService;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
+import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
 
 @Service
 @Transactional(readOnly = true)
 public class CarServiceImpl implements CarService{
 	@Autowired
 	private CarDao carRepository;
+	
+	@Autowired
+	private EmployeeService employeeService;
 
 	@Override
 	public List<CarTO> findAllCars() {
@@ -27,22 +38,23 @@ public class CarServiceImpl implements CarService{
 	
 	@Override
 	public CarTO findCarById(Long id) {
-		return CarMapper.toCarTO(carRepository.getOne(id));
+		if(carRepository.exists(id)){
+			return CarMapper.toCarTO(carRepository.getOne(id));
+		}
+		return null;
 	}
 	
 	@Override
 	public boolean contains(Long id){
-		try {
-			carRepository.getOne(id);
-		} catch (JpaObjectRetrievalFailureException e) {
-			return false;
-		}
-		return true;
+		return carRepository.exists(id);
 	}
 	
 	@Override
 	public CarEntity findCarEntityById(Long id) {
-		return carRepository.getOne(id);
+		if(carRepository.exists(id)){
+			return carRepository.getOne(id);
+		}
+		return null;
 	}
 	
 	@Override
@@ -88,10 +100,21 @@ public class CarServiceImpl implements CarService{
 		List<CarEntity> allCars = carRepository.findCarsByCarType(carType);
 		return CarMapper.map2TOs(allCars);
 	}
+	
+	@Override
+	public List<EmployeeEntity> findCarersByCarID(Long id) {
+		if(!carRepository.exists(id)){
+			return null;
+		}
+		return carRepository.findOne(id).getCarers().stream().collect(Collectors.toList());
+	}
 
 	@Override
 	@Transactional(readOnly = false)
 	public CarTO deleteCar(Long id) {
+		if(!carRepository.exists(id)){
+			return null;
+		}
 		CarTO car = CarMapper.toCarTO(carRepository.getOne(id));
 		carRepository.delete(id);
 		return car;
@@ -99,10 +122,10 @@ public class CarServiceImpl implements CarService{
 
 	@Override
 	public CarTO updateCar(CarTO newCar) {
-		CarEntity updatedCar = findCarEntityById(newCar.getId());
-		if (updatedCar == null) {
+		if(!carRepository.exists(newCar.getId())){
 			return null;
 		}
+		CarEntity updatedCar = findCarEntityById(newCar.getId());
 		updatedCar.setManufacturer(newCar.getManufacturer());
 		updatedCar.setModel(newCar.getModel());
 		updatedCar.setProductionYear(newCar.getProductionYear());
@@ -111,5 +134,15 @@ public class CarServiceImpl implements CarService{
 		updatedCar.setPower(newCar.getPower());
 		updatedCar.setCarType(newCar.getCarType());
 		return CarMapper.toCarTO(carRepository.update(updatedCar));
+	}
+
+	@Override
+	public boolean addCarer(Long carId, Long employeeId) {
+		if(!(employeeService.contains(employeeId) && carRepository.exists(carId))){
+			return false;
+		}	
+		carRepository.addCarer(carId, employeeService.findEmployeeEntityById(employeeId));
+		employeeService.addCarer(employeeId, carRepository.findOne(carId));
+		return true;
 	}
 }

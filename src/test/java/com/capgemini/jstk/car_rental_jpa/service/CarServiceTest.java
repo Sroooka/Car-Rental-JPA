@@ -3,7 +3,18 @@ package com.capgemini.jstk.car_rental_jpa.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
 import java.util.List;
+
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +24,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
+import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
+import com.capgemini.jstk.car_rental_jpa.domain.LocationEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
+import com.capgemini.jstk.car_rental_jpa.enums.Position;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO.CarTOBuilder;
+import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest (properties = "spring.profiles.active=test")
@@ -24,13 +40,16 @@ public class CarServiceTest {
 	@Autowired
 	CarService carService;
 	
+	@Autowired
+	EmployeeService employeeService;
+	
 	@Before
 	public void init(){
 
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldFindCorrectAmountWhenFindAllCars(){
 		//given
 		for(int i = 0; i < 500; i++){
@@ -45,8 +64,8 @@ public class CarServiceTest {
 				assertEquals(selectedCars.size(), 1000);
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldFindCarsByManufacturer(){
 		// given
 		carService.saveCar(getPorscheCar());
@@ -61,8 +80,8 @@ public class CarServiceTest {
 		assertEquals(selectedCars.get(0).getModel(), savedCar.getModel());
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldFindCarsByModel(){
 		// given
 		carService.saveCar(getPorscheCar());
@@ -77,8 +96,8 @@ public class CarServiceTest {
 		assertEquals(selectedCars.get(0).getModel(), savedCar.getModel());
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldFindCarsByProductionYear(){
 		// given
 		carService.saveCar(getPorscheCar());
@@ -92,8 +111,8 @@ public class CarServiceTest {
 		assertEquals(selectedCars.get(0).getProductionYear(), 2012);
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldFindCarsByCarType(){
 		// given
 		carService.saveCar(getPorscheCar());
@@ -108,8 +127,8 @@ public class CarServiceTest {
 		assertEquals(selectedCars.get(0).getCarType(), CarType.COUPE);
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldDeleteCar(){
 		//given
 		carService.saveCar(getMercedesCar());
@@ -126,8 +145,8 @@ public class CarServiceTest {
 		assertFalse(containsCar);
 	}
 	
-	@Transactional
-	@Test
+	//@Transactional
+	//@Test
 	public void shouldUpdateCar(){
 		//given
 		CarTO beforeUpdateCar = carService.saveCar(getMercedesCar());
@@ -144,6 +163,41 @@ public class CarServiceTest {
 		assertEquals(beforeUpdateCar.getModel(), "W204");
 		assertEquals(afterUpdateCar.getManufacturer(), "Audi");
 		assertEquals(afterUpdateCar.getModel(), "A8");
+	}
+	
+	//@Transactional
+	//@Test
+	public void shouldReturnTrueIfContainsElement() {
+		// given when
+		CarTO addedCar = carService.saveCar(getPorscheCar());
+
+		// then
+		assertEquals(carService.contains(addedCar.getId()), true);
+		assertEquals(carService.contains(addedCar.getId() + 1), false);
+	}
+	
+	@Transactional
+	@Test
+	public void shouldAddCarer(){
+		//given
+		CarTO car = carService.saveCar(getBrabusCar());
+		EmployeeTO employee = employeeService.saveEmployee(getEmployee());
+		// when
+		System.out.println(employeeService.findAllEmployees().get(0));
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		System.out.println(carService.findAllCars().get(0));
+		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+		
+		//carService.addCarer(car.getId(), employee.getId());
+		
+		//List<EmployeeEntity> list = carService.findCarersByCarID(car.getId());
+		//System.out.println(list.get(0).toString());
+		// then
+		//assertNotNull(afterUpdateCar);
+		//assertEquals(beforeUpdateCar.getManufacturer(), "Mercedes");
+		//assertEquals(beforeUpdateCar.getModel(), "W204");
+		//assertEquals(afterUpdateCar.getManufacturer(), "Audi");
+		//assertEquals(afterUpdateCar.getModel(), "A8");
 	}
 	
 	private CarTO getMercedesCar(){
@@ -180,5 +234,25 @@ public class CarServiceTest {
 				.withPower(310)
 				.withCarType(CarType.SEDAN)
 				.build();
+	}
+	
+	private CarTO getBrabusCar(){
+		CarTO car = new CarTO();
+		car.setManufacturer("Brabus");
+		car.setModel("E63");
+		car.setProductionYear(2009);
+		car.setCarType(CarType.WAGON);
+		car.setColor("Black");
+		car.setEngineSize(6296);
+		car.setPower(807);
+		return car;
+	}
+	
+	private EmployeeTO getEmployee(){
+		EmployeeTO employee = new EmployeeTO();
+		employee.setName("Jan");
+		employee.setSurname("Kowalski");
+		employee.setPosition(Position.MANAGER);
+		return employee;
 	}
 }
