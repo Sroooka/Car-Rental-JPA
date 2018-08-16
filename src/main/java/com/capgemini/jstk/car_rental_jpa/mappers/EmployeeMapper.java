@@ -1,5 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.mappers;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,11 +30,11 @@ public class EmployeeMapper {
 		return employeeEntity;
 	}
 	
-	public static Set<EmployeeTO> map2TOs(Set<EmployeeEntity> employeeEntities) {
-		return employeeEntities.stream().map(EmployeeMapper::toEmployeeTO).collect(Collectors.toSet());
+	public static List<EmployeeTO> map2TOs(List<EmployeeEntity> employeeEntities) {
+		return employeeEntities.stream().map(EmployeeMapper::toEmployeeTO).collect(Collectors.toList());
 	}
 	
-	public static Set<EmployeeEntity> map2Entities(Set<EmployeeTO> employeeTO) {
-		return employeeTO.stream().map(EmployeeMapper::toEmployeeEntity).collect(Collectors.toSet());
+	public static List<EmployeeEntity> map2Entities(List<EmployeeTO> employeeTO) {
+		return employeeTO.stream().map(EmployeeMapper::toEmployeeEntity).collect(Collectors.toList());
 	}
 }

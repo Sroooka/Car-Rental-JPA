@@ -5,35 +5,22 @@ import java.util.Date;
 public class RentalTO {
 
 	private Long id;
-	private Long customerId;
-    private Long carId;
 	private Date rentBegin;
 	private Date rentEnd;
-    private Long startLocationId;
-    private Long endLocationId;
 	private int cost;
 	
-	public RentalTO(Long id, Long customerId, Long carId, Date rentBegin, Date rentEnd, Long startLocationId,
-			Long endLocationId, int cost) {
+	public RentalTO(Long id, Date rentBegin, Date rentEnd, int cost) {
 		super();
 		this.id = id;
-		this.customerId = customerId;
-		this.carId = carId;
 		this.rentBegin = rentBegin;
 		this.rentEnd = rentEnd;
-		this.startLocationId = startLocationId;
-		this.endLocationId = endLocationId;
 		this.cost = cost;
 	}
 
 	public static class RentalTOBuilder {
 		private Long id;
-		private Long customerId;
-	    private Long carId;
 		private Date rentBegin;
 		private Date rentEnd;
-	    private Long startLocationId;
-	    private Long endLocationId;
 		private int cost;
 		
 		public RentalTOBuilder() {
@@ -42,16 +29,6 @@ public class RentalTO {
 		
 		public RentalTOBuilder withId(Long id) {
 			this.id = id;
-			return this;
-		}
-		
-		public RentalTOBuilder withCustomerId(Long customerId) {
-			this.customerId = customerId;
-			return this;
-		}
-		
-		public RentalTOBuilder withCarId(Long carId) {
-			this.carId = carId;
 			return this;
 		}
 		
@@ -65,43 +42,20 @@ public class RentalTO {
 			return this;
 		}
 		
-		public RentalTOBuilder withStartLocationId(Long startLocationId) {
-			this.startLocationId = startLocationId;
-			return this;
-		}
-		
-		public RentalTOBuilder withEndLocationId(Long endLocationId) {
-			this.endLocationId = endLocationId;
-			return this;
-		}
-		
 		public RentalTOBuilder withCost(int cost) {
 			this.cost = cost;
 			return this;
 		}
 		
 		public RentalTO build() {
-			checkBeforeBuild(customerId, carId, rentBegin, rentEnd, startLocationId, endLocationId, cost);
-			return new RentalTO(id, customerId, carId, rentBegin, rentEnd, startLocationId, endLocationId, cost);
+			checkBeforeBuild(rentBegin, rentEnd, cost);
+			return new RentalTO(id, rentBegin, rentEnd, cost);
 		}
 		
-		private void checkBeforeBuild(Long customerId, Long carId, Date rentBegin, Date rentEnd, Long startLocationId,
-				Long endLocationId, int cost) {		
-			if (customerId <= 0)
-			{
-				throw new RuntimeException("Incorrect Customer ID to be created!");
-			}
-			if (carId <= 0)
-			{
-				throw new RuntimeException("Incorrect Car ID to be created!");
-			}
+		private void checkBeforeBuild(Date rentBegin, Date rentEnd, int cost) {		
 			if (rentBegin == null || rentEnd == null)
 			{
 				throw new RuntimeException("Incorrect Rent Time to be created!");
-			}
-			if (startLocationId <= 0 || endLocationId <= 0)
-			{
-				throw new RuntimeException("Incorrect LocationId to be created!");
 			}
 			if (cost<0)
 			{
@@ -113,9 +67,8 @@ public class RentalTO {
 	@Override
 	public String toString() {
 		//TODO UPDATE WHEN SERVICE IS FINISHED
-		return "CarID: " + carId + ", Rent Begin: " + rentBegin + ", Rent End: " + rentEnd +
-				", StartLocationID: " + startLocationId + ", EndLocationID: " + endLocationId +
-				", Cost: " + cost;
+		String idText = (id == 0) ? "No ID! / " : "ID: " + id;
+		return idText + " Rent Begin: " + rentBegin + ", Rent End: " + rentEnd + ", Cost: " + cost;
 	}
 	
 	@Override
@@ -163,22 +116,6 @@ public class RentalTO {
 		this.id = id;
 	}
 
-	public Long getCustomerId() {
-		return customerId;
-	}
-
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-
-	public Long getCarId() {
-		return carId;
-	}
-
-	public void setCarId(Long carId) {
-		this.carId = carId;
-	}
-
 	public Date getRentBegin() {
 		return rentBegin;
 	}
@@ -193,22 +130,6 @@ public class RentalTO {
 
 	public void setRentEnd(Date rentEnd) {
 		this.rentEnd = rentEnd;
-	}
-
-	public Long getStartLocationId() {
-		return startLocationId;
-	}
-
-	public void setStartLocationId(Long startLocationId) {
-		this.startLocationId = startLocationId;
-	}
-
-	public Long getEndLocationId() {
-		return endLocationId;
-	}
-
-	public void setEndLocationId(Long endLocationId) {
-		this.endLocationId = endLocationId;
 	}
 
 	public int getCost() {
