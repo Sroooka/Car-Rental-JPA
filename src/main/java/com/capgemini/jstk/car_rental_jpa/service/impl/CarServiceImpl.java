@@ -3,15 +3,11 @@ package com.capgemini.jstk.car_rental_jpa.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.jstk.car_rental_jpa.dao.CarDao;
-import com.capgemini.jstk.car_rental_jpa.dao.EmployeeDao;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.mappers.CarMapper;
@@ -19,7 +15,6 @@ import com.capgemini.jstk.car_rental_jpa.service.CarService;
 import com.capgemini.jstk.car_rental_jpa.service.EmployeeService;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
-import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
 
 @Service
 @Transactional(readOnly = true)
@@ -136,6 +131,7 @@ public class CarServiceImpl implements CarService{
 		return CarMapper.toCarTO(carRepository.update(updatedCar));
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public boolean addCarer(Long carId, Long employeeId) {
 		if(!(employeeService.contains(employeeId) && carRepository.exists(carId))){
@@ -144,5 +140,10 @@ public class CarServiceImpl implements CarService{
 		carRepository.addCarer(carId, employeeService.findEmployeeEntityById(employeeId));
 		employeeService.addCarer(employeeId, carRepository.findOne(carId));
 		return true;
+	}
+
+	@Override
+	public int length() {
+		return carRepository.findAll().size();
 	}
 }
