@@ -4,17 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
 import java.util.List;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,11 +12,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
-import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
-import com.capgemini.jstk.car_rental_jpa.domain.LocationEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.enums.Position;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
@@ -185,22 +173,33 @@ public class CarServiceTest {
 		//given
 		CarTO car = carService.saveCar(getBrabusCar());
 		EmployeeTO employee = employeeService.saveEmployee(getEmployee());
+		
 		// when
-		System.out.println(employee.getId());
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-		System.out.println(car.getId());
-		System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
-		
 		carService.addCarer(car.getId(), employee.getId());
-		
-		//List<EmployeeEntity> list = carService.findCarersByCarID(car.getId());
-		//System.out.println(list.get(0).toString());
+		List<CarTO> listOfCarsFromEmployee = carService.findCarsByCarerID(employee.getId());
 		// then
-		//assertNotNull(afterUpdateCar);
-		//assertEquals(beforeUpdateCar.getManufacturer(), "Mercedes");
-		//assertEquals(beforeUpdateCar.getModel(), "W204");
-		//assertEquals(afterUpdateCar.getManufacturer(), "Audi");
-		//assertEquals(afterUpdateCar.getModel(), "A8");
+		assertNotNull(listOfCarsFromEmployee);
+		assertEquals(listOfCarsFromEmployee.get(0).getManufacturer(), "Brabus");
+		assertEquals(listOfCarsFromEmployee.get(0).getModel(), "E63");
+	}
+	
+	//@Transactional
+	@Test
+	public void shouldFindCarsByCarerId(){
+		//given
+		EmployeeTO employee = employeeService.saveEmployee(getEmployee());
+		for(int i=0; i<100;i++){
+			CarTO car = carService.saveCar(getBrabusCar());
+			carService.addCarer(car.getId(), employee.getId());
+		}
+		
+		// when
+		List<CarTO> listOfCarsFromEmployee = carService.findCarsByCarerID(employee.getId());
+		// then
+		assertNotNull(listOfCarsFromEmployee);
+		assertEquals(listOfCarsFromEmployee.get(0).getManufacturer(), "Brabus");
+		assertEquals(listOfCarsFromEmployee.get(0).getModel(), "E63");
+		assertEquals(listOfCarsFromEmployee.size(), 100);
 	}
 	
 	private CarTO getMercedesCar(){

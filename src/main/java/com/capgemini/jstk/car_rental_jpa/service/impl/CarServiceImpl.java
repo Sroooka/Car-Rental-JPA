@@ -15,6 +15,7 @@ import com.capgemini.jstk.car_rental_jpa.service.CarService;
 import com.capgemini.jstk.car_rental_jpa.service.EmployeeService;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
+import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
 
 @Service
 @Transactional(readOnly = true)
@@ -97,11 +98,9 @@ public class CarServiceImpl implements CarService{
 	}
 	
 	@Override
-	public List<EmployeeEntity> findCarersByCarID(Long id) {
-		if(!carRepository.exists(id)){
-			return null;
-		}
-		return carRepository.findOne(id).getCarers().stream().collect(Collectors.toList());
+	public List<CarTO> findCarsByCarerID(Long carerId) {
+		List<CarEntity> carsWithSpecifiedCarer = carRepository.findCarsByCarer(carerId);
+		return CarMapper.map2TOs(carsWithSpecifiedCarer);
 	}
 
 	@Override
@@ -145,5 +144,11 @@ public class CarServiceImpl implements CarService{
 	@Override
 	public int length() {
 		return carRepository.findAll().size();
+	}
+
+	@Override
+	public List<CarTO> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

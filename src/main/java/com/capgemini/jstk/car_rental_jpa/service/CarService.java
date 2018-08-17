@@ -3,6 +3,7 @@ package com.capgemini.jstk.car_rental_jpa.service;
 import java.util.List;
 
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
+import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
@@ -15,13 +16,14 @@ public interface CarService {
 	public List<CarTO> findCarByModel(String model);
 	public List<CarTO> findCarByProductionYear(int productionYear);
 	public List<CarTO> findCarByCarType(CarType carType);
+	public List<CarTO> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer);
 	public boolean addCarer(Long carId, Long employeeId);
 	public CarTO updateCar(CarTO newCar);
 	public boolean contains(Long id);
 	public CarTO deleteCar(Long id);
 	public CarTO saveCar(CarTO car);
 	public int length();
-	public List<EmployeeEntity> findCarersByCarID(Long id);
+	public List<CarTO> findCarsByCarerID(Long carerId);
 	public CarEntity saveEntityCar(CarEntity car);
 	public void clear();
 }
