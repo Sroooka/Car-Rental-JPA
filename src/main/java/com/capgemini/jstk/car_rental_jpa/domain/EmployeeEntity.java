@@ -1,6 +1,7 @@
 package com.capgemini.jstk.car_rental_jpa.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
@@ -42,7 +43,7 @@ public class EmployeeEntity extends AbstractTimeStampEntity implements Serializa
 	private LocationEntity location;
 	
 	@ManyToMany (mappedBy = "carers")
-	private Collection<CarEntity> cars;
+	private Collection<CarEntity> cars = new ArrayList<>();
 	
 	public EmployeeEntity() {
 	}

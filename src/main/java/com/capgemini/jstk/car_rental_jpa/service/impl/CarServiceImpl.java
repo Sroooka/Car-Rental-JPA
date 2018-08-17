@@ -1,21 +1,18 @@
 package com.capgemini.jstk.car_rental_jpa.service.impl;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.capgemini.jstk.car_rental_jpa.dao.CarDao;
+import com.capgemini.jstk.car_rental_jpa.dao.EmployeeDao;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.mappers.CarMapper;
 import com.capgemini.jstk.car_rental_jpa.service.CarService;
-import com.capgemini.jstk.car_rental_jpa.service.EmployeeService;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
-import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
 
 @Service
 @Transactional(readOnly = true)
@@ -24,7 +21,7 @@ public class CarServiceImpl implements CarService{
 	private CarDao carRepository;
 	
 	@Autowired
-	private EmployeeService employeeService;
+	private EmployeeDao employeeRepository;
 
 	@Override
 	public List<CarTO> findAllCars() {
@@ -71,22 +68,22 @@ public class CarServiceImpl implements CarService{
 		return CarMapper.map2TOs(allCars);
 	}
 	
-	@Override
 	@Transactional(readOnly = false)
+	@Override
 	public CarTO saveCar(CarTO car) {
 		CarEntity carEntity = carRepository.save(CarMapper.toCarEntity(car));
 		return CarMapper.toCarTO(carEntity);
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
+	//@Transactional(readOnly = false)
 	public CarEntity saveEntityCar(CarEntity car) {
 		carRepository.save(car);
 		return car;
 	}
 
-	@Override
 	@Transactional(readOnly = false)
+	@Override
 	public void clear() {
 		carRepository.deleteAll();
 	}
@@ -103,8 +100,8 @@ public class CarServiceImpl implements CarService{
 		return CarMapper.map2TOs(carsWithSpecifiedCarer);
 	}
 
-	@Override
 	@Transactional(readOnly = false)
+	@Override
 	public CarTO deleteCar(Long id) {
 		if(!carRepository.exists(id)){
 			return null;
@@ -114,6 +111,7 @@ public class CarServiceImpl implements CarService{
 		return car;
 	}
 
+	@Transactional(readOnly = false)
 	@Override
 	public CarTO updateCar(CarTO newCar) {
 		if(!carRepository.exists(newCar.getId())){
@@ -133,11 +131,16 @@ public class CarServiceImpl implements CarService{
 	@Transactional(readOnly = false)
 	@Override
 	public boolean addCarer(Long carId, Long employeeId) {
-		if(!(employeeService.contains(employeeId) && carRepository.exists(carId))){
+		if(!(employeeRepository.exists(employeeId) && carRepository.exists(carId))){
 			return false;
 		}	
-		carRepository.addCarer(carId, employeeService.findEmployeeEntityById(employeeId));
-		employeeService.addCarer(employeeId, carRepository.findOne(carId));
+		//carRepository.addCarer(carId, employeeRepository.getOne(employeeId));
+		//employeeRepository.addCarer(employeeId, carRepository.findOne(carId));
+		CarEntity car = carRepository.findOne(carId);
+		EmployeeEntity employee = employeeRepository.findOne(employeeId);
+		car.getCarers().add(employee);
+		employee.getCars().add(car);
+		carRepository.update(car);
 		return true;
 	}
 
@@ -148,7 +151,7 @@ public class CarServiceImpl implements CarService{
 
 	@Override
 	public List<CarTO> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer) {
-		// TODO Auto-generated method stub
-		return null;
+		List<CarEntity> cars = carRepository.findCarByCarTypeAndManufacturer(carType, manufacturer);
+		return CarMapper.map2TOs(cars);
 	}
 }

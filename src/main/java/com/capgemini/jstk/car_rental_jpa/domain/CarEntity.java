@@ -1,6 +1,7 @@
 package com.capgemini.jstk.car_rental_jpa.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
             joinColumns = {@JoinColumn(name = "CAR_ID")},
             inverseJoinColumns = {@JoinColumn(name = "EMPLOYEE_ID")}
     )
-    private Collection<EmployeeEntity> carers;
+    private Collection<EmployeeEntity> carers = new ArrayList<>();
 	
 	@OneToMany(mappedBy = "car")
     Set<RentalEntity> rentals;

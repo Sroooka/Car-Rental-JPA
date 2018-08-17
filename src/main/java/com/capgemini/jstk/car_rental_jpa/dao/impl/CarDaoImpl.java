@@ -61,4 +61,12 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
         query.setParameter("carerId", carerId);
         return query.getResultList();
 	}
+
+	@Override
+	public List<CarEntity> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer) {
+		TypedQuery<CarEntity> query = entityManager.createQuery(
+                "select car from CarEntity car where car.carType = :carType and upper(car.manufacturer) like concat(upper(:manufacturer), '%')", CarEntity.class);
+        query.setParameter("carType", carType).setParameter("manufacturer", manufacturer);
+        return query.getResultList();
+	}
 }

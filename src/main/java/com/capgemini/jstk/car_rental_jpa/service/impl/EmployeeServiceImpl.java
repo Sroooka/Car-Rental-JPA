@@ -2,6 +2,7 @@ package com.capgemini.jstk.car_rental_jpa.service.impl;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 	public EmployeeTO findEmployeeById(Long id) {
 		if(employeeRepository.exists(id)){
 			return EmployeeMapper.toEmployeeTO(employeeRepository.getOne(id));
+		}
+		return null;
+	}
+	
+	@Override
+	public List<CarTO> getCaredCarsByEmployeeId(Long id) {
+		if(employeeRepository.exists(id)){
+			return CarMapper.map2TOs(employeeRepository.getOne(id).getCars().stream().collect(Collectors.toList()));
 		}
 		return null;
 	}
