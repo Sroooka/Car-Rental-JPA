@@ -111,11 +111,11 @@ public class CarServiceTest {
 	@Test
 	public void shouldDeleteCar(){
 		//given
-		carService.saveCar(getMercedesCar());
+		CarTO addedCar = carService.saveCar(getMercedesCar());
 		//when
-		CarTO foundCar = carService.findCarById(1L);
-		CarTO deletedCar = carService.deleteCar(1L);
-		boolean containsCar = carService.contains(1L);
+		CarTO foundCar = carService.findCarById(addedCar.getId());
+		CarTO deletedCar = carService.deleteCar(addedCar.getId());
+		boolean containsCar = carService.contains(addedCar.getId());
 		
 		// then
 		assertNotNull(foundCar);
