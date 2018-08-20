@@ -38,10 +38,17 @@ public class RentalServiceTest {
 	@Autowired
 	LocationService locationService;
 
+	@Autowired 
+	CustomerService customerService;
+	
 	@Test
 	public void shouldAddRental() {
 		// given
-		RentalTO savedRental = rentalService.saveRental(getRental());
+		CarTO addedCar = carService.saveCar(getMercedesCar());
+		CustomerTO addedCustomer = customerService.saveCustomer(getCustomerKowalski());
+		LocationTO startLocation = locationService.saveLocation(getLocationWroclaw());
+		LocationTO endLocation = locationService.saveLocation(getLocationWroclaw());
+		RentalTO savedRental = rentalService.saveRental(getRental(addedCar, addedCustomer, startLocation, endLocation));
 		// when
 		RentalTO foundRental = rentalService.findRentalById(savedRental.getId());
 		// then
@@ -52,14 +59,14 @@ public class RentalServiceTest {
 		assertEquals(savedRental.getCost(), foundRental.getCost());
 	}
 	
-	private RentalTO getRental(){
+	private RentalTO getRental(CarTO car, CustomerTO customer, LocationTO startLocation, LocationTO endLocation){
 		return new RentalTOBuilder()
-			.withCustomer(getCustomerKowalski())	
-			.withCar(getMercedesCar())
+			.withCustomer(customer)	
+			.withCar(car)
 			.withRentBegin(new Date())
 			.withRentEnd(new Date())
-			.withStartLocation(getLocationWroclaw())
-			.withEndLocation(getLocationWroclaw())
+			.withStartLocation(startLocation)
+			.withEndLocation(endLocation)
 			.withCost(1500)
 			.build();
 	}

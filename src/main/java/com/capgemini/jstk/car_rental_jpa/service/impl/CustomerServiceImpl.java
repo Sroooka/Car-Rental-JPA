@@ -23,4 +23,12 @@ public class CustomerServiceImpl implements CustomerService {
 		CustomerEntity customerEntity = customerRepository.save(CustomerMapper.toCustomerEntity(customer));
 		return CustomerMapper.toCustomerTO(customerEntity);
 	}
+	
+	@Override
+	public CustomerTO findCustomerById(Long id) {
+		if(customerRepository.exists(id)){
+			return CustomerMapper.toCustomerTO(customerRepository.getOne(id));
+		}
+		return null;
+	}
 }
