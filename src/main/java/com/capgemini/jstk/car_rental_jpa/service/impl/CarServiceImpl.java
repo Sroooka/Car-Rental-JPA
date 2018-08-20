@@ -134,8 +134,6 @@ public class CarServiceImpl implements CarService{
 		if(!(employeeRepository.exists(employeeId) && carRepository.exists(carId))){
 			return false;
 		}	
-		//carRepository.addCarer(carId, employeeRepository.getOne(employeeId));
-		//employeeRepository.addCarer(employeeId, carRepository.findOne(carId));
 		CarEntity car = carRepository.findOne(carId);
 		EmployeeEntity employee = employeeRepository.findOne(employeeId);
 		car.getCarers().add(employee);

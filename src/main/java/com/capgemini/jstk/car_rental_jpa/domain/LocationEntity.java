@@ -1,6 +1,7 @@
 package com.capgemini.jstk.car_rental_jpa.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -32,13 +33,13 @@ public class LocationEntity extends AbstractTimeStampEntity implements Serializa
 	private String email;
 
 	@OneToMany(mappedBy = "location")
-    Set<EmployeeEntity> employee;
+    Set<EmployeeEntity> employee = new HashSet<>();
 	
     @OneToMany(mappedBy = "startLocation")
-    Set<RentalEntity> startRentals;
+    Set<RentalEntity> startRentals = new HashSet<>();
 
     @OneToMany(mappedBy = "endLocation")
-    Set<RentalEntity> endRentals;
+    Set<RentalEntity> endRentals = new HashSet<>();
 	
 	public LocationEntity() {
 	}
