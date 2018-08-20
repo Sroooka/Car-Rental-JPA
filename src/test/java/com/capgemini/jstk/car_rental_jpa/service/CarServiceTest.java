@@ -3,7 +3,9 @@ package com.capgemini.jstk.car_rental_jpa.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -16,20 +18,34 @@ import org.springframework.transaction.annotation.Transactional;
 import com.capgemini.jstk.car_rental_jpa.enums.CarType;
 import com.capgemini.jstk.car_rental_jpa.enums.Position;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
+import com.capgemini.jstk.car_rental_jpa.types.CustomerTO;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO.CarTOBuilder;
+import com.capgemini.jstk.car_rental_jpa.types.CustomerTO.CustomerTOBuilder;
+import com.capgemini.jstk.car_rental_jpa.types.LocationTO.LocationTOBuilder;
+import com.capgemini.jstk.car_rental_jpa.types.RentalTO.RentalTOBuilder;
 import com.capgemini.jstk.car_rental_jpa.types.EmployeeTO;
+import com.capgemini.jstk.car_rental_jpa.types.LocationTO;
+import com.capgemini.jstk.car_rental_jpa.types.RentalTO;
 
 @Transactional
 @RunWith(SpringRunner.class)
 @SpringBootTest (properties = "spring.profiles.active=mysql-test")
 //@SpringBootTest (properties = "spring.profiles.active=hsql-test")
 public class CarServiceTest {
+	@Autowired
+	RentalService rentalService;
 	
 	@Autowired
 	CarService carService;
 	
 	@Autowired
 	EmployeeService employeeService;
+	
+	@Autowired
+	CustomerService customerService;
+	
+	@Autowired
+	LocationService locationService;
 	
 	
 	@Test
@@ -197,7 +213,7 @@ public class CarServiceTest {
 		carService.saveCar(getMercedesCar());
 		
 		// when
-		List<CarTO> selectedCars = carService.findCarByCarTypeAndManufacturer(CarType.CABRIOLET, "mercedes");
+		List<CarTO> selectedCars = carService.findCarByCarTypeAndManufacturer(CarType.CABRIOLET, "Mercedes");
 		// then
 		assertNotNull(selectedCars);
 		assertEquals(selectedCars.size(), 1);
@@ -205,6 +221,60 @@ public class CarServiceTest {
 		assertEquals(selectedCars.get(0).getModel(), "AMG GT");
 		assertEquals(selectedCars.get(0).getProductionYear(), 2018);
 		assertEquals(selectedCars.get(0).getCarType(), CarType.CABRIOLET);
+	}
+	
+	@Test
+    public void shouldRemoveAllRentalsWhenDeletingCarUsingCascade() {
+		// given
+		CarTO addedCar = carService.saveCar(getBrabusCar());
+		CustomerTO addedCustomer = customerService.saveCustomer(getCustomerKowalski());
+		LocationTO startLocation = locationService.saveLocation(getLocationWroclaw());
+		LocationTO endLocation = locationService.saveLocation(getLocationWroclaw());
+		RentalTO addedFirstRental = rentalService.saveRental(getRental(addedCar, addedCustomer, startLocation, endLocation));
+		RentalTO addedSecondRental = rentalService.saveRental(getRental(addedCar, addedCustomer, startLocation, endLocation));
+		// when
+		boolean containsFirstRentalBeforeDeletingCar = rentalService.contains(addedFirstRental.getId());
+		boolean containsSecondRentalBeforeDeletingCar = rentalService.contains(addedSecondRental.getId());
+		carService.deleteCar(addedCar.getId());
+		boolean containsFirstRentalAfterDeletingCar = rentalService.contains(addedFirstRental.getId());
+		boolean containsSecondRentalAfterDeletingCar = rentalService.contains(addedSecondRental.getId());
+		// then
+		assertTrue(containsFirstRentalBeforeDeletingCar);
+		assertTrue(containsSecondRentalBeforeDeletingCar);
+		assertFalse(containsFirstRentalAfterDeletingCar);
+		assertFalse(containsSecondRentalAfterDeletingCar);
+    }
+	
+	private RentalTO getRental(CarTO car, CustomerTO customer, LocationTO startLocation, LocationTO endLocation){
+		return new RentalTOBuilder()
+			.withCustomer(customer)	
+			.withCar(car)
+			.withRentBegin(new Date())
+			.withRentEnd(new Date())
+			.withStartLocation(startLocation)
+			.withEndLocation(endLocation)
+			.withCost(1500)
+			.build();
+	}
+	
+	private CustomerTO getCustomerKowalski(){
+		return new CustomerTOBuilder()
+			.withName("Jan")
+			.withSurname("Kowalski")
+			.withAddress("Poznanska 110")
+			.withCity("Poznan")
+			.withPostalCode("60123")
+			.build();
+	}
+	
+	private LocationTO getLocationWroclaw() {
+		return new LocationTOBuilder()
+				.withAddress("Piotrkowska 12")
+				.withCity("Wroclaw")
+				.withEmail("office.wroclaw@domain.com")
+				.withPhone("770-077-707")
+				.withPostalCode("50234")
+				.build();
 	}
 	
 	private CarTO getMercedesCar(){

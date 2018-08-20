@@ -2,6 +2,7 @@ package com.capgemini.jstk.car_rental_jpa.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -44,7 +45,7 @@ public class CustomerEntity extends AbstractTimeStampEntity implements Serializa
 	private String creditCardNumber;
 	
 	@OneToMany(mappedBy = "customer")
-    Set<RentalEntity> rentals;
+    Set<RentalEntity> rentals = new HashSet<>();
 	
 	public CustomerEntity() {
 	}

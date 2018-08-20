@@ -15,8 +15,12 @@ public class RentalMapper {
 			return null;
 		return new RentalTOBuilder()
 				.withId(rentalEntity.getId())
+				.withCustomer(CustomerMapper.toCustomerTO(rentalEntity.getCustomer()))
+				.withCar(CarMapper.toCarTO(rentalEntity.getCar()))
 				.withRentBegin(rentalEntity.getRentBegin())
 				.withRentEnd(rentalEntity.getRentEnd())
+				.withStartLocation(LocationMapper.toLocationTO(rentalEntity.getStartLocation()))
+				.withEndLocation(LocationMapper.toLocationTO(rentalEntity.getEndLocation()))
 				.withCost(rentalEntity.getCost())
 				.build();
 	}
@@ -25,8 +29,12 @@ public class RentalMapper {
 		if (rentalTO == null)
 			return null;
 		RentalEntity rentalEntity = new RentalEntity();
+		rentalEntity.setCustomer(CustomerMapper.toCustomerEntity(rentalTO.getCustomer()));
+		rentalEntity.setCar(CarMapper.toCarEntity(rentalTO.getCar()));
 		rentalEntity.setRentBegin(rentalTO.getRentBegin());
 		rentalEntity.setRentEnd(rentalTO.getRentEnd());
+		rentalEntity.setStartLocation(LocationMapper.toLocationEntity(rentalTO.getStartLocation()));
+		rentalEntity.setEndLocation(LocationMapper.toLocationEntity(rentalTO.getEndLocation()));
 		rentalEntity.setCost(rentalTO.getCost());
 		return rentalEntity;
 	}

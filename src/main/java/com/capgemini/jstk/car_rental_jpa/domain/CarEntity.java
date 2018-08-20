@@ -3,6 +3,7 @@ package com.capgemini.jstk.car_rental_jpa.domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -43,8 +44,8 @@ public class CarEntity extends AbstractTimeStampEntity implements Serializable {
     )
     private Collection<EmployeeEntity> carers = new ArrayList<>();
 	
-	@OneToMany(mappedBy = "car")
-    Set<RentalEntity> rentals;
+	@OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE)
+    Set<RentalEntity> rentals = new HashSet<>();
 	
 	public CarEntity() {
 	}

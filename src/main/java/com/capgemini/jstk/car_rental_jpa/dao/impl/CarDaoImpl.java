@@ -1,9 +1,15 @@
 package com.capgemini.jstk.car_rental_jpa.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.ParameterExpression;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.springframework.stereotype.Repository;
 
@@ -64,9 +70,19 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
 
 	@Override
 	public List<CarEntity> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer) {
-		TypedQuery<CarEntity> query = entityManager.createQuery(
-                "select car from CarEntity car where car.carType = :carType and upper(car.manufacturer) like concat(upper(:manufacturer), '%')", CarEntity.class);
-        query.setParameter("carType", carType).setParameter("manufacturer", manufacturer);
-        return query.getResultList();
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<CarEntity> cq = cb.createQuery(CarEntity.class);
+        Root<CarEntity> car = cq.from(CarEntity.class);
+        List<Predicate> predicates = new ArrayList<Predicate>();
+        ParameterExpression<String> p1 = cb.parameter(String.class);
+        ParameterExpression<CarType> p2 = cb.parameter(CarType.class); 
+        predicates.add(cb.like(car.get("manufacturer"), p1));
+        predicates.add(cb.equal(car.get("carType"), p2));
+        cq.select(car)
+        	.where(predicates.toArray(new Predicate[]{}));
+        TypedQuery<CarEntity> q = entityManager.createQuery(cq);
+        q.setParameter(p1, manufacturer);
+        q.setParameter(p2, carType);
+        return q.getResultList();
 	}
 }
