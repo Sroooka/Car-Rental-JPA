@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -39,7 +40,7 @@ public class EmployeeEntity extends AbstractTimeStampEntity implements Serializa
 	@Temporal(TemporalType.DATE)
 	private Date birth;
 	
-	@ManyToOne
+	@ManyToOne 
 	private LocationEntity location;
 	
 	@ManyToMany (mappedBy = "carers")

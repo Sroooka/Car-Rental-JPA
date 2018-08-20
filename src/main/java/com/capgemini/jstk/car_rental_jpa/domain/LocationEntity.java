@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,8 +34,8 @@ public class LocationEntity extends AbstractTimeStampEntity implements Serializa
 	private String email;
 
 	@OneToMany(mappedBy = "location")
-    Set<EmployeeEntity> employee = new HashSet<>();
-	
+	Set<EmployeeEntity> employee = new HashSet<>();
+
     @OneToMany(mappedBy = "startLocation")
     Set<RentalEntity> startRentals = new HashSet<>();
 

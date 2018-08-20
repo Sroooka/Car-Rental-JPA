@@ -2,6 +2,7 @@ package com.capgemini.jstk.car_rental_jpa.service;
 
 import java.util.List;
 
+import com.capgemini.jstk.car_rental_jpa.criterias.EmployeeSearchCriteria;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
@@ -15,4 +16,5 @@ public interface EmployeeService {
 	public void addCarer(Long employeeId, CarEntity car);
 	public List<EmployeeTO> findAllEmployees();
 	public List<CarTO> getCaredCarsByEmployeeId(Long id);
+	public List<EmployeeTO> searchByCriteria(EmployeeSearchCriteria criteria);
 }

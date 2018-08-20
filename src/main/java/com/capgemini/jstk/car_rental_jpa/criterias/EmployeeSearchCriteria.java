@@ -1,39 +1,41 @@
 package com.capgemini.jstk.car_rental_jpa.criterias;
 
 import com.capgemini.jstk.car_rental_jpa.enums.Position;
+import com.capgemini.jstk.car_rental_jpa.types.CarTO;
+import com.capgemini.jstk.car_rental_jpa.types.LocationTO;
 
 public class EmployeeSearchCriteria {
-	Long locationId;
-	Long caredCarId;
+	LocationTO location;
+	CarTO caredCar;
 	Position position;
 
 	public EmployeeSearchCriteria() {
 		super();
 	}
 
-	public EmployeeSearchCriteria(Long locationId, Long caredCarId, Position position) {
+	public EmployeeSearchCriteria(LocationTO location, CarTO caredCar, Position position) {
 		super();
-		this.locationId = locationId;
-		this.caredCarId = caredCarId;
+		this.location = location;
+		this.caredCar = caredCar;
 		this.position = position;
 	}
 
 	public static class EmployeeSearchCriteriaBuilder {
-		Long locationId;
-		Long caredCarId;
-		Position position;
+		LocationTO location = null;
+		CarTO caredCar = null;
+		Position position = null;
 		
 		public EmployeeSearchCriteriaBuilder(){
 			super();
 		}
 		
-		public EmployeeSearchCriteriaBuilder withLocationId(Long locationId) {
-			this.locationId = locationId;
+		public EmployeeSearchCriteriaBuilder withLocationId(LocationTO location) {
+			this.location = location;
 			return this;
 		}
 		
-		public EmployeeSearchCriteriaBuilder withCaredCarId(Long caredCarId) {
-			this.caredCarId = caredCarId;
+		public EmployeeSearchCriteriaBuilder withCaredCarId(CarTO caredCar) {
+			this.caredCar = caredCar;
 			return this;
 		}
 		
@@ -43,24 +45,24 @@ public class EmployeeSearchCriteria {
 		}
 		
 		public EmployeeSearchCriteria build(){
-			return new EmployeeSearchCriteria(locationId, caredCarId, position);
+			return new EmployeeSearchCriteria(location, caredCar, position);
 		}
 	}
 
-	public Long getLocationId() {
-		return locationId;
+	public LocationTO getLocation() {
+		return location;
 	}
 
-	public void setLocationId(Long locationId) {
-		this.locationId = locationId;
+	public void setLocation(LocationTO location) {
+		this.location = location;
 	}
 
-	public Long getCaredCarId() {
-		return caredCarId;
+	public CarTO getCaredCar() {
+		return caredCar;
 	}
 
-	public void setCaredCarId(Long caredCarId) {
-		this.caredCarId = caredCarId;
+	public void setCaredCar(CarTO caredCar) {
+		this.caredCar = caredCar;
 	}
 
 	public Position getPosition() {

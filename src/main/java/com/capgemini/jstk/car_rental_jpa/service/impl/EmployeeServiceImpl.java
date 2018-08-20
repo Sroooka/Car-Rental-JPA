@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.capgemini.jstk.car_rental_jpa.criterias.EmployeeSearchCriteria;
 import com.capgemini.jstk.car_rental_jpa.dao.EmployeeDao;
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
 import com.capgemini.jstk.car_rental_jpa.domain.EmployeeEntity;
@@ -70,5 +71,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 		EmployeeEntity employee = this.findEmployeeEntityById(employeeId);
 		Collection<CarEntity> cars = employee.getCars();
 		cars.add(car);
+	}
+
+	@Override
+	public List<EmployeeTO> searchByCriteria(EmployeeSearchCriteria criteria) {
+		List<EmployeeTO> all = EmployeeMapper.map2TOs(employeeRepository.findAll());
+		List<EmployeeTO> foundByLocation, foundByCaredCars, foundByPosition;
+		foundByLocation = foundByCaredCars = foundByPosition = all;
+		if(criteria.getLocation() != null){
+			foundByLocation = EmployeeMapper.map2TOs(employeeRepository.searchByLocation(criteria.getLocation().getId()));
+		}
+		if(criteria.getCaredCar() != null){
+			foundByCaredCars = EmployeeMapper.map2TOs(employeeRepository.searchByCaredCars(criteria.getCaredCar().getId()));
+		}
+		if(criteria.getPosition() != null){
+			foundByPosition = EmployeeMapper.map2TOs(employeeRepository.searchByPosition(criteria.getPosition()));
+		}
+		all.retainAll(foundByLocation);
+		all.retainAll(foundByCaredCars);
+		all.retainAll(foundByPosition);
+
+		return all;
 	}
 }

@@ -1,5 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.service.impl;
 
+import java.util.Date;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -151,5 +152,16 @@ public class CarServiceImpl implements CarService{
 	public List<CarTO> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer) {
 		List<CarEntity> cars = carRepository.findCarByCarTypeAndManufacturer(carType, manufacturer);
 		return CarMapper.map2TOs(cars);
+	}
+
+	@Override
+	public List<CarTO> findCarsRentedByMoreThanExpectedPeople(int i) {
+		List<CarEntity> cars = carRepository.findCarsRentedByMoreThanExpectedPeople(i);
+		return CarMapper.map2TOs(cars);
+	}
+	
+	@Override
+	public int findCarsAmountRentedInSpecifiedTime(Date from, Date to) {
+		return carRepository.findCarsAmountRentedInSpecifiedTime(from, to);
 	}
 }

@@ -1,5 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.service;
 
+import java.util.Date;
 import java.util.List;
 
 import com.capgemini.jstk.car_rental_jpa.types.CarTO;
@@ -24,4 +25,6 @@ public interface CarService {
 	public List<CarTO> findCarsByCarerID(Long carerId);
 	public CarEntity saveEntityCar(CarEntity car);
 	public void clear();
+	public List<CarTO> findCarsRentedByMoreThanExpectedPeople(int i);
+	public int findCarsAmountRentedInSpecifiedTime(Date from, Date to);
 }

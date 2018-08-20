@@ -2,6 +2,7 @@ package com.capgemini.jstk.car_rental_jpa.dao.impl;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
@@ -84,5 +85,37 @@ public class CarDaoImpl extends AbstractDao<CarEntity, Long> implements CarDao{
         q.setParameter(p1, manufacturer);
         q.setParameter(p2, carType);
         return q.getResultList();
+	}
+
+	@Override
+	public List<CarEntity> findCarsRentedByMoreThanExpectedPeople(int i) {
+		TypedQuery<CarEntity> query = entityManager.createQuery(
+                	"select car from CarEntity car " 
+                + 	"where car.id in ("
+                + 		"select rentals.car.id from RentalEntity rentals " 
+                +		"group by rentals.car.id " 
+                +		"having count(distinct rentals.customer.id) >= :amount)"
+            		,CarEntity.class);
+        query.setParameter("amount", new Long(i));
+        return query.getResultList();
+	}
+	
+	@Override
+	public int findCarsAmountRentedInSpecifiedTime(Date from, Date to){
+		TypedQuery<CarEntity> query = entityManager.createQuery(
+		          	"select car from CarEntity car "
+		        + 	"join car.rentals rentals " 
+		        +	"where "
+		        + 	"(rentals.rentBegin >= :from and rentals.rentBegin <= :to)"
+		        + 	" or "
+		        + 	"(rentals.rentEnd >= :from and rentals.rentEnd <= :to)"
+		        + 	" or "
+		        + 	"(rentals.rentBegin <= :from and rentals.rentEnd >= :to)"
+		        
+		        , CarEntity.class
+		        );
+		        query.setParameter("from", from);
+		        query.setParameter("to", to);
+		return query.getResultList().size();
 	}
 }

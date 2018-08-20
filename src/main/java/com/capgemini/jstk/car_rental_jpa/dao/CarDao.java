@@ -1,5 +1,6 @@
 package com.capgemini.jstk.car_rental_jpa.dao;
 
+import java.util.Date;
 import java.util.List;
 
 import com.capgemini.jstk.car_rental_jpa.domain.CarEntity;
@@ -14,4 +15,6 @@ public interface CarDao extends Dao<CarEntity, Long>{
 	List<CarEntity> findCarsByCarer(Long carerId);
 	void addCarer(Long carId, EmployeeEntity carer);
 	List<CarEntity> findCarByCarTypeAndManufacturer(CarType carType, String manufacturer);
+	List<CarEntity> findCarsRentedByMoreThanExpectedPeople(int i);
+	public int findCarsAmountRentedInSpecifiedTime(Date from, Date to);
 }
