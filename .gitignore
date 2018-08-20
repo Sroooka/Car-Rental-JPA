@@ -599,5 +599,6 @@ secrets.yml
 /target/
 /target/
 
+
 # Allow
-DatabaseSchema.png
+*.png
