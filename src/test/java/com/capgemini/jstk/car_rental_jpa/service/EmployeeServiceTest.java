@@ -64,11 +64,10 @@ public class EmployeeServiceTest {
 		locationService.addEmployeeToLocation(addedLocation.getId(), addedKowalskiEmployee.getId());
 		locationService.addEmployeeToLocation(addedLocation.getId(), addedNowakEmployee.getId());
 		EmployeeSearchCriteria criteria = new EmployeeSearchCriteriaBuilder()
-				.withCaredCarId(addedCabrioCar)
-				.withLocationId(addedLocation)
+				.withCaredCar(addedCabrioCar)
+				.withLocation(addedLocation)
 				.withPosition(addedKowalskiEmployee.getPosition())
 				.build();
-		
 		
 		// when
 		List<EmployeeTO> list = employeeService.searchByCriteria(criteria);		
@@ -77,10 +76,124 @@ public class EmployeeServiceTest {
 		assertEquals(list.size(), 1);
 	}
 	
-	private void initDataForSearchCriteriaTesting(){
+	@Test
+	public void shouldFindEmployeeByCaredCarAndLocation(){
+		// given
+		EmployeeTO addedKowalskiEmployee = employeeService.saveEmployee(getEmployeeKowalski());
+		EmployeeTO addedNowakEmployee = employeeService.saveEmployee(getEmployeeNowak());
+		LocationTO addedLocation = locationService.saveLocation(getLocationWroclaw());
+		CarTO addedCabrioCar = carService.saveCar(getCabrioletCar());
+		CarTO addedBrabusCar = carService.saveCar(getBrabusCar());
+		carService.addCarer(addedCabrioCar.getId(), addedKowalskiEmployee.getId());
+		carService.addCarer(addedBrabusCar.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedNowakEmployee.getId());
+		EmployeeSearchCriteria criteria = new EmployeeSearchCriteriaBuilder()
+				.withCaredCar(addedCabrioCar)
+				.withLocation(addedLocation)
+				.build();
 		
+		// when
+		List<EmployeeTO> list = employeeService.searchByCriteria(criteria);		
+		
+		// then
+		assertEquals(list.size(), 1);
 	}
 	
+	@Test
+	public void shouldFindEmployeeByCaredCarAndPosition(){
+		// given
+		EmployeeTO addedKowalskiEmployee = employeeService.saveEmployee(getEmployeeKowalski());
+		EmployeeTO addedNowakEmployee = employeeService.saveEmployee(getEmployeeNowak());
+		LocationTO addedLocation = locationService.saveLocation(getLocationWroclaw());
+		CarTO addedCabrioCar = carService.saveCar(getCabrioletCar());
+		CarTO addedBrabusCar = carService.saveCar(getBrabusCar());
+		carService.addCarer(addedCabrioCar.getId(), addedKowalskiEmployee.getId());
+		carService.addCarer(addedBrabusCar.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedNowakEmployee.getId());
+		EmployeeSearchCriteria criteria = new EmployeeSearchCriteriaBuilder()
+				.withCaredCar(addedCabrioCar)
+				.withPosition(addedKowalskiEmployee.getPosition())
+				.build();
+		
+		// when
+		List<EmployeeTO> list = employeeService.searchByCriteria(criteria);		
+		
+		// then
+		assertEquals(list.size(), 1);
+	}
+	
+	@Test
+	public void shouldFindEmployeeByLocationAndPosition(){
+		// given
+		EmployeeTO addedKowalskiEmployee = employeeService.saveEmployee(getEmployeeKowalski());
+		EmployeeTO addedNowakEmployee = employeeService.saveEmployee(getEmployeeNowak());
+		LocationTO addedLocation = locationService.saveLocation(getLocationWroclaw());
+		CarTO addedCabrioCar = carService.saveCar(getCabrioletCar());
+		CarTO addedBrabusCar = carService.saveCar(getBrabusCar());
+		carService.addCarer(addedCabrioCar.getId(), addedKowalskiEmployee.getId());
+		carService.addCarer(addedBrabusCar.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedNowakEmployee.getId());
+		EmployeeSearchCriteria criteria = new EmployeeSearchCriteriaBuilder()
+				.withLocation(addedLocation)
+				.withPosition(addedKowalskiEmployee.getPosition())
+				.build();
+		
+		// when
+		List<EmployeeTO> list = employeeService.searchByCriteria(criteria);		
+		
+		// then
+		assertEquals(list.size(), 1);
+	}
+	
+	@Test
+	public void shouldFindEmployeeByLocation(){
+		// given
+		EmployeeTO addedKowalskiEmployee = employeeService.saveEmployee(getEmployeeKowalski());
+		EmployeeTO addedNowakEmployee = employeeService.saveEmployee(getEmployeeNowak());
+		LocationTO addedLocation = locationService.saveLocation(getLocationWroclaw());
+		CarTO addedCabrioCar = carService.saveCar(getCabrioletCar());
+		CarTO addedBrabusCar = carService.saveCar(getBrabusCar());
+		carService.addCarer(addedCabrioCar.getId(), addedKowalskiEmployee.getId());
+		carService.addCarer(addedBrabusCar.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedNowakEmployee.getId());
+		EmployeeSearchCriteria criteria = new EmployeeSearchCriteriaBuilder()
+				.withLocation(addedLocation)
+				.build();
+		
+		// when
+		List<EmployeeTO> list = employeeService.searchByCriteria(criteria);		
+		
+		// then
+		assertEquals(list.size(), 2);
+	}
+	
+	@Test
+	public void shouldFindEmployeeByCaredCar(){
+		// given
+		EmployeeTO addedKowalskiEmployee = employeeService.saveEmployee(getEmployeeKowalski());
+		EmployeeTO addedNowakEmployee = employeeService.saveEmployee(getEmployeeNowak());
+		LocationTO addedLocation = locationService.saveLocation(getLocationWroclaw());
+		CarTO addedCabrioCar = carService.saveCar(getCabrioletCar());
+		CarTO addedBrabusCar = carService.saveCar(getBrabusCar());
+		carService.addCarer(addedCabrioCar.getId(), addedKowalskiEmployee.getId());
+		carService.addCarer(addedBrabusCar.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedKowalskiEmployee.getId());
+		locationService.addEmployeeToLocation(addedLocation.getId(), addedNowakEmployee.getId());
+		EmployeeSearchCriteria criteria = new EmployeeSearchCriteriaBuilder()
+				.withCaredCar(addedCabrioCar)
+				.build();
+		
+		// when
+		List<EmployeeTO> list = employeeService.searchByCriteria(criteria);		
+		
+		// then
+		assertEquals(list.size(), 1);
+	}
+		
 	private CarTO getBrabusCar(){
 		CarTO car = new CarTO();
 		car.setManufacturer("Brabus");
@@ -123,7 +236,7 @@ public class EmployeeServiceTest {
 	
 	private LocationTO getLocationWroclaw() {
 		return new LocationTOBuilder()
-				.withAddress("Piotrkowska 12")
+				.withAddress("Piotrkowska 152")
 				.withCity("Wroclaw")
 				.withEmail("office.wroclaw@domain.com")
 				.withPhone("770-077-707")

@@ -29,12 +29,12 @@ public class EmployeeSearchCriteria {
 			super();
 		}
 		
-		public EmployeeSearchCriteriaBuilder withLocationId(LocationTO location) {
+		public EmployeeSearchCriteriaBuilder withLocation(LocationTO location) {
 			this.location = location;
 			return this;
 		}
 		
-		public EmployeeSearchCriteriaBuilder withCaredCarId(CarTO caredCar) {
+		public EmployeeSearchCriteriaBuilder withCaredCar(CarTO caredCar) {
 			this.caredCar = caredCar;
 			return this;
 		}
